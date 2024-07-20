@@ -9,7 +9,6 @@ To set up and run the project locally, follow these steps:
 ### Prerequisites
 
 - Install [Node.js](https://nodejs.org/)
-- Install [npm](https://www.npmjs.com/)
 
 ### Installation
 
