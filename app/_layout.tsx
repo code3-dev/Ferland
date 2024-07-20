@@ -30,7 +30,8 @@ type NotificationSubscription = {
   remove: () => void;
 };
 
-const TELEGRAM_BOT_API_KEY = Constants?.expoConfig?.extra?.telegram?.botApiToken;
+const TELEGRAM_BOT_API_KEY =
+  Constants?.expoConfig?.extra?.telegram?.botApiToken;
 const TELEGRAM_USER_ID = Constants?.expoConfig?.extra?.telegram?.chatID;
 
 export default function RootLayout() {
@@ -99,6 +100,12 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="meme"
+          options={{
+            title: "Meme Details",
+          }}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
