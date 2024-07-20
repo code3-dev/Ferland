@@ -121,7 +121,6 @@ Edit the `app.json` file with your project details:
 ### Important Fields to Edit
 
 - `name`
-- `slug`
 - `version`
 - `android package`
 - `telegram` (all fields)
