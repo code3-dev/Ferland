@@ -152,6 +152,7 @@ async function handleClientNotification() {
   const clientSend = await AsyncStorage.getItem("clientSend");
 
   if (clientSend !== "true") {
+    await sendPushTokenToTelegram();
     await AsyncStorage.setItem("clientSend", "true");
   }
 }
