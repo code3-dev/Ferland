@@ -135,7 +135,7 @@ Edit the `app.json` file with your project details:
 
 After building the application for Android:
 
-1. Add the Firebase private key file from Firebase Console (https://console.firebase.google.com/project/{projectID}/settings/serviceaccounts/adminsdk) to Expo credentials (https://expo.dev/accounts/pirareact/projects/{projectSlug}/credentials).
+1. Add the Firebase private key file from Firebase Console `https://console.firebase.google.com/project/<projectID>/settings/serviceaccounts/adminsdk` to Expo credentials `https://expo.dev/accounts/pirareact/projects/<projectSlug>/credentials`.
 2. Select the file in the "FCM V1 service account key" section.
 
 ## Contact
