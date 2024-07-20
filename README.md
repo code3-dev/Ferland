@@ -1,50 +1,149 @@
-# Welcome to your Expo app 👋
+# Ferland - Online Meme Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Ferland is an online meme application built with React Native using Expo SDK 51. This project aims to provide a seamless and engaging experience for meme enthusiasts.
 
-## Get started
+## Getting Started
 
-1. Install dependencies
+To set up and run the project locally, follow these steps:
 
-   ```bash
-   npm install
-   ```
+### Prerequisites
 
-2. Start the app
+- Install [Node.js](https://nodejs.org/)
+- Install [npm](https://www.npmjs.com/)
 
-   ```bash
-    npx expo start
-   ```
+### Installation
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+1. Clone the repository:
 
 ```bash
-npm run reset-project
+git clone https://github.com/code3-dev/Ferland.git
+cd Ferland
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Install the dependencies:
 
-## Learn more
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Start the application:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npx expo start
+```
 
-## Join the community
+You can view the result in the Expo Go app.
 
-Join our community of developers creating universal apps.
+### Additional Setup
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1. Install `eas-cli` globally:
+
+```bash
+npm install --global eas-cli
+```
+
+2. Login to [Expo](https://expo.dev) and then login via the terminal:
+
+```bash
+eas login
+```
+
+3. Create a project on [Expo](https://expo.dev) and initialize EAS:
+
+```bash
+eas init --id <YOUR_PROJECT_ID>
+```
+
+### Building the Application
+
+To build the application for Android, use the following command:
+
+```bash
+eas build -p android --profile preview
+```
+
+### Configuration
+
+Edit the `app.json` file with your project details:
+
+```json
+{
+  "expo": {
+    "name": "Ferland",
+    "slug": "ferland",
+    "version": "1.3.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.meme.ferland",
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "telegram": {
+        "botApiToken": "7287774296:AAH21qEaK7Esz0GxK54rp3DnpnQGUmjYlhA",
+        "chatID": "5513316818",
+        "username": "h3dev"
+      },
+      "apiUrl": "https://ferland.vercel.app"
+    }
+  }
+}
+```
+
+### Important Fields to Edit
+
+- `name`
+- `slug`
+- `version`
+- `android package`
+- `telegram` (all fields)
+- `apiUrl` (run Nuxt API from [Ferland-API](https://github.com/code3-dev/Ferland-API))
+
+### Additional Configuration
+
+1. Edit `app/(tabs)/about.tsx` for the app's about section.
+2. Add Firebase `google-services.json` in the main project directory. Follow the full [Firebase setup documentation](https://docs.expo.dev/guides/using-firebase/).
+
+### Post Build Steps
+
+After building the application for Android:
+
+1. Add the Firebase private key file from [Firebase Console](https://console.firebase.google.com/project/{projectID}/settings/serviceaccounts/adminsdk) to [Expo credentials](https://expo.dev/accounts/pirareact/projects/{projectSlug}/credentials).
+2. Select the file in the "FCM V1 service account key" section.
+
+## Contact
+
+For any queries or issues, please contact:
+
+- **Name:** Hossein Pira
+- **Email:** h3dev.pira@gmail.com
+- **Telegram:** [@h3dev](https://t.me/h3dev)
