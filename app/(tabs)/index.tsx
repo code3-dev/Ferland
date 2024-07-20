@@ -86,7 +86,7 @@ export default function HomeScreen() {
       } catch (error) {
         console.error("Failed to fetch memes:", error);
         setShowLoadMore(false);
-        setTimeout(fetchMemes, 3000);
+        setTimeout(fetchMemes, 4000);
       } finally {
         setLoading(false);
       }
