@@ -57,6 +57,8 @@ export default function HomeScreen() {
   const [likedMemes, setLikedMemes] = useState<LikedMeme[]>([]);
   const [showLoadMore, setShowLoadMore] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
+  const retryLimit = 5;
   const colorScheme = useColorScheme();
   const router = useRouter();
 
@@ -85,8 +87,13 @@ export default function HomeScreen() {
         setShowLoadMore(currentPage < parseData.totalPages);
       } catch (error) {
         console.error("Failed to fetch memes:", error);
-        setShowLoadMore(false);
-        setTimeout(fetchMemes, 4000);
+        if (retryCount < retryLimit) {
+          setShowLoadMore(false);
+          setRetryCount(retryCount + 1);
+          setTimeout(fetchMemes, 5000);
+        } else {
+          console.error("Reached maximum retry limit");
+        }
       } finally {
         setLoading(false);
       }
