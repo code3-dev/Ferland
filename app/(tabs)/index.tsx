@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Linking,
   ActivityIndicator,
+  ToastAndroid,
 } from "react-native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -55,9 +56,11 @@ export default function HomeScreen() {
   const [totalPages, setTotalPages] = useState(1);
   const [memes, setMemes] = useState<Meme[]>([]);
   const [likedMemes, setLikedMemes] = useState<LikedMeme[]>([]);
-  const [showLoadMore, setShowLoadMore] = useState(true);
+  const [showLoadMore, setShowLoadMore] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isLoadMoreLoading, setIsLoadMoreLoading] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
   const retryLimit = 5;
   const colorScheme = useColorScheme();
   const router = useRouter();
@@ -84,18 +87,27 @@ export default function HomeScreen() {
 
         setMemes(updatedMemes);
         setTotalPages(parseData.totalPages);
-        setShowLoadMore(currentPage < parseData.totalPages);
+        setShowLoadMore(currentPage < parseData.totalPages && hasScrolledToEnd);
+
+        if (currentPage === 1) {
+          ToastAndroid.show("Memes Loaded Successfully", ToastAndroid.SHORT);
+        } else if (currentPage > 1) {
+          ToastAndroid.show("Load More Memes Success", ToastAndroid.SHORT);
+        }
       } catch (error) {
         console.error("Failed to fetch memes:", error);
+        ToastAndroid.show("Failed to load memes", ToastAndroid.SHORT);
         if (retryCount < retryLimit) {
           setShowLoadMore(false);
           setRetryCount(retryCount + 1);
           setTimeout(fetchMemes, 5000);
         } else {
+          ToastAndroid.show("Reached maximum retry limit", ToastAndroid.SHORT);
           console.error("Reached maximum retry limit");
         }
       } finally {
         setLoading(false);
+        setIsLoadMoreLoading(false);
       }
     };
 
@@ -118,6 +130,14 @@ export default function HomeScreen() {
 
     return () => clearInterval(intervalId);
   }, [currentPage]);
+
+  useEffect(() => {
+    if (hasScrolledToEnd && !loading && currentPage < totalPages) {
+      setShowLoadMore(true);
+    } else {
+      setShowLoadMore(false);
+    }
+  }, [hasScrolledToEnd, loading, currentPage, totalPages]);
 
   const handleDownload = (item: Meme) => {
     const url = item.type === "image" ? item.image : item.video;
@@ -196,7 +216,9 @@ export default function HomeScreen() {
 
   const handleLoadMore = () => {
     if (currentPage < totalPages) {
+      setIsLoadMoreLoading(true);
       setCurrentPage(currentPage + 1);
+      setHasScrolledToEnd(false);
     }
   };
 
@@ -211,7 +233,7 @@ export default function HomeScreen() {
         <ThemedText type="title">Hello!</ThemedText>
         <HelloWave />
       </ThemedView>
-      {loading ? (
+      {loading && currentPage === 1 ? (
         <ActivityIndicator
           size="large"
           color={Colors[colorScheme ?? "light"].tint}
@@ -221,16 +243,23 @@ export default function HomeScreen() {
           data={memes}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
-          onEndReached={handleLoadMore}
+          onEndReached={() => setHasScrolledToEnd(true)}
           onEndReachedThreshold={0.1}
         />
       )}
-      {showLoadMore && !loading && (
+      {showLoadMore && !loading && currentPage < totalPages && (
         <TouchableOpacity
           onPress={handleLoadMore}
           style={styles.loadMoreButton}
         >
-          <Text style={styles.loadMoreButtonText}>Load More</Text>
+          {isLoadMoreLoading ? (
+            <ActivityIndicator
+              size="small"
+              color={Colors[colorScheme ?? "light"].tint}
+            />
+          ) : (
+            <Text style={styles.loadMoreButtonText}>Load More</Text>
+          )}
         </TouchableOpacity>
       )}
     </ParallaxScrollView>
